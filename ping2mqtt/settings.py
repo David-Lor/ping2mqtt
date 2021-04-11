@@ -9,12 +9,15 @@ import pydantic
 from .models import PingHost
 
 ENV_FILE = os.getenv("ENV_FILE", ".env")
-FILE_BASENAME = "hosts"
 
 
 class BaseSettings(pydantic.BaseSettings):
     class Config:
         env_file = ENV_FILE
+
+
+class GeneralSettings(BaseSettings):
+    hosts_file: str = "hosts"
 
 
 class MQTTSettings(BaseSettings):
@@ -42,8 +45,11 @@ class MQTTSettings(BaseSettings):
         env_prefix = "MQTT_"
 
 
+general_settings = GeneralSettings()
+
+
 def _parse_json_file() -> List[PingHost]:
-    with open(FILE_BASENAME + ".json", "r") as file:
+    with open(general_settings.hosts_file + ".json", "r") as file:
         parsed = json.load(file)
         if not isinstance(parsed, list):
             raise ValueError("JSON file is not an array")
@@ -58,7 +64,7 @@ def _parse_json_file() -> List[PingHost]:
 
 
 def _parse_ndjson_file() -> List[PingHost]:
-    with open(FILE_BASENAME + ".ndjson", "r") as file:
+    with open(general_settings.hosts_file + ".ndjson", "r") as file:
         hosts: List[PingHost] = list()
         while True:
             line = file.readline()
