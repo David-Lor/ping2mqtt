@@ -24,12 +24,19 @@ class MQTTSettings(BaseSettings):
     password: Optional[str] = None
     client_id: str = None
     transport: str = "tcp"
+    base_topic: str = "ping"
 
     @pydantic.validator("client_id", pre=True)
     def _default_client_id(cls, v):
         if v is None:
             v = f"ping2mqtt@{gethostname()}_{uuid4()}"
         return v
+
+    def format_topic(self, suffix_topic: str):
+        result = f"{self.base_topic}/{suffix_topic}"
+        while "//" in result:
+            result.replace("//", "/")
+        return result
 
     class Config(BaseSettings.Config):
         env_prefix = "MQTT_"
@@ -67,6 +74,7 @@ def _parse_ndjson_file() -> List[PingHost]:
 
 
 def read_settings_file() -> List[PingHost]:
+    # TODO settings for setting file location & defining hosts through env var
     try:
         return _parse_ndjson_file()
     except FileNotFoundError:
