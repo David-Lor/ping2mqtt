@@ -1,2 +1,5 @@
 .vscode/
 .idea/
+.env
+hosts.json
+hosts.ndjson

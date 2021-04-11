@@ -1,0 +1,5 @@
+asyncio-mqtt==0.8.1
+parse==1.19.0
+pydantic==1.8.1
+python-dotenv==0.17.0
+loguru==0.5.3
