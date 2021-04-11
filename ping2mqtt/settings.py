@@ -64,7 +64,10 @@ def _parse_json_file() -> List[PingHost]:
         for parsed_obj in parsed:
             if not isinstance(parsed_obj, dict):
                 raise ValueError("Array contains other types than objects")
-            hosts.append(PingHost(**parsed_obj))
+
+            parsed_host = PingHost(**parsed_obj)
+            logger.debug(f"Parsed host: {parsed_host}")
+            hosts.append(parsed_host)
 
         return hosts
 
@@ -85,7 +88,10 @@ def _parse_ndjson_file() -> List[PingHost]:
             parsed_line = json.loads(line.strip())
             if not isinstance(parsed_line, dict):
                 raise ValueError("Array contains other types than objects")
-            hosts.append(PingHost(**parsed_line))
+
+            parsed_host = PingHost(**parsed_line)
+            logger.debug(f"Parsed host: {parsed_host}")
+            hosts.append(parsed_host)
 
         return hosts
 
