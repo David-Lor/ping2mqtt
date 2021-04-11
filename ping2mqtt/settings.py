@@ -39,7 +39,7 @@ class MQTTSettings(BaseSettings):
     def format_topic(self, suffix_topic: str):
         result = f"{self.base_topic}/{suffix_topic}"
         while "//" in result:
-            result.replace("//", "/")
+            result = result.replace("//", "/")
         return result
 
     class Config(BaseSettings.Config):

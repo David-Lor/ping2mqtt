@@ -72,6 +72,7 @@ class Ping:
         last_read = 0
         while proc.returncode is None:
             line = (await proc.stdout.readline()).decode().strip()
+            # TODO detect errors such as "ping" util not installed
 
             result = self._parse_ping_line(host=host, line=line)
             if result is None:
