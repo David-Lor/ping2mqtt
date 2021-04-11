@@ -7,6 +7,7 @@ from typing import List, Optional
 import pydantic
 
 from .models import PingHost
+from .logging import logger
 
 ENV_FILE = os.getenv("ENV_FILE", ".env")
 
@@ -49,7 +50,9 @@ general_settings = GeneralSettings()
 
 
 def _parse_json_file() -> List[PingHost]:
-    with open(general_settings.hosts_file + ".json", "r") as file:
+    filename = general_settings.hosts_file + ".json"
+    logger.debug(f"Loading hosts file {filename} ...")
+    with open(filename, "r") as file:
         parsed = json.load(file)
         if not isinstance(parsed, list):
             raise ValueError("JSON file is not an array")
@@ -64,7 +67,9 @@ def _parse_json_file() -> List[PingHost]:
 
 
 def _parse_ndjson_file() -> List[PingHost]:
-    with open(general_settings.hosts_file + ".ndjson", "r") as file:
+    filename = general_settings.hosts_file + ".ndjson"
+    logger.debug(f"Loading hosts file {filename} ...")
+    with open(filename, "r") as file:
         hosts: List[PingHost] = list()
         while True:
             line = file.readline()
