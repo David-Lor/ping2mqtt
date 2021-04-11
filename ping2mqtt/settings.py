@@ -50,8 +50,11 @@ general_settings = GeneralSettings()
 
 
 def _parse_json_file() -> List[PingHost]:
-    filename = general_settings.hosts_file + ".json"
+    filename = general_settings.hosts_file
+    if not filename.endswith(".json"):
+        filename += ".json"
     logger.debug(f"Loading hosts file {filename} ...")
+
     with open(filename, "r") as file:
         parsed = json.load(file)
         if not isinstance(parsed, list):
@@ -67,8 +70,11 @@ def _parse_json_file() -> List[PingHost]:
 
 
 def _parse_ndjson_file() -> List[PingHost]:
-    filename = general_settings.hosts_file + ".ndjson"
+    filename = general_settings.hosts_file
+    if not filename.endswith(".ndjson"):
+        filename += ".ndjson"
     logger.debug(f"Loading hosts file {filename} ...")
+
     with open(filename, "r") as file:
         hosts: List[PingHost] = list()
         while True:
