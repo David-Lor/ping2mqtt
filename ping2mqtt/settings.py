@@ -85,7 +85,11 @@ def _parse_ndjson_file() -> List[PingHost]:
 
 
 def read_settings_file() -> List[PingHost]:
-    # TODO settings for setting file location & defining hosts through env var
+    if general_settings.hosts_file.endswith(".ndjson"):
+        return _parse_ndjson_file()
+    if general_settings.hosts_file.endswith(".json"):
+        return _parse_json_file()
+
     try:
         return _parse_ndjson_file()
     except FileNotFoundError:
