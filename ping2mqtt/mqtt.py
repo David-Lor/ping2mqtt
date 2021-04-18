@@ -4,6 +4,7 @@ from asyncio_mqtt import Client
 
 from .models import PingResult
 from .settings import MQTTSettings
+from .logging import logger
 
 
 class MQTT:
@@ -28,10 +29,10 @@ class MQTT:
 
     async def connect(self):
         await self._client.connect()
-        print("MQTT connected!")
+        logger.info("MQTT connected")
 
     async def _publish(self, topic: str, payload: str):
-        print(f"MQTT PUB @ {topic}: {payload}")
+        logger.debug(f"MQTT pub @ \"{topic}\" : \"{payload}\"")
         await self._client.publish(topic, payload)
 
     async def _publish_ping_result(self, ping_result: PingResult):

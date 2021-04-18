@@ -66,7 +66,7 @@ def _parse_json_file() -> List[PingHost]:
                 raise ValueError("Array contains other types than objects")
 
             parsed_host = PingHost(**parsed_obj)
-            logger.debug(f"Parsed host: {parsed_host}")
+            logger.info(f"Parsed host: {parsed_host}")
             hosts.append(parsed_host)
 
         return hosts
@@ -90,7 +90,7 @@ def _parse_ndjson_file() -> List[PingHost]:
                 raise ValueError("Array contains other types than objects")
 
             parsed_host = PingHost(**parsed_line)
-            logger.debug(f"Parsed host: {parsed_host}")
+            logger.info(f"Parsed host: {parsed_host}")
             hosts.append(parsed_host)
 
         return hosts

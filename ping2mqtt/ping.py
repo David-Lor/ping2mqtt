@@ -5,6 +5,7 @@ from typing import List, Optional
 import parse
 
 from .models import PingHost, PingResult
+from .logging import logger
 
 # TODO class PingTask - use one per host ???
 # TODO abstract Ping class - for using other pinging methods different than icmp ???
@@ -43,19 +44,22 @@ class Ping:
         64 bytes from 8.8.8.8: icmp_seq=1 ttl=116 time=15.9 ms
         64 bytes from 8.8.8.8: icmp_seq=2 ttl=116 time=15.9 ms
         64 bytes from 8.8.8.8: icmp_seq=3 ttl=116 time=19.5 ms
-        ^C
+
         --- 8.8.8.8 ping statistics ---
         3 packets transmitted, 3 received, 0% packet loss, time 4ms
         rtt min/avg/max/mdev = 15.859/17.078/19.510/1.725 ms
         """
         result = parse.search("time={time} ms", line)
         if result:
+            result_time = result["time"]
+            logger.debug(f"Ping {host.host} = {result_time}")
             return PingResult(
                 host=host.host,
-                time=result["time"]
+                time=result_time
             )
 
         if not any(True for chunk in cls.PING_IGNORE_LINES_CONTAINING if chunk in line):
+            logger.debug(f"Ping {host.host} = failed")
             return PingResult(
                 host=host.host,
                 time=-1
@@ -72,6 +76,7 @@ class Ping:
         last_read = 0
         while proc.returncode is None:
             line = (await proc.stdout.readline()).decode().strip()
+            logger.trace(f"Ping line received: \"{line}\"")
             # TODO detect errors such as "ping" util not installed
 
             result = self._parse_ping_line(host=host, line=line)
