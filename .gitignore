@@ -1,5 +1,6 @@
 .vscode/
 .idea/
 .env
+__pycache__/
 hosts.json
 hosts.ndjson
