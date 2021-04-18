@@ -4,3 +4,4 @@
 __pycache__/
 hosts.json
 hosts.ndjson
+!examples/*
