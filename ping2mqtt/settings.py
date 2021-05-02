@@ -7,7 +7,6 @@ from typing import List, Optional
 import pydantic
 
 from .models import PingHost
-from .logging import logger
 
 ENV_FILE = os.getenv("ENV_FILE", ".env")
 
@@ -19,6 +18,7 @@ class BaseSettings(pydantic.BaseSettings):
 
 class GeneralSettings(BaseSettings):
     hosts_file: str = "hosts"
+    log_level: str = "DEBUG"
 
 
 class MQTTSettings(BaseSettings):
@@ -50,6 +50,8 @@ general_settings = GeneralSettings()
 
 
 def _parse_json_file() -> List[PingHost]:
+    # TODO import canonically avoiding circular import
+    from .logging import logger
     filename = general_settings.hosts_file
     if not filename.endswith(".json"):
         filename += ".json"
@@ -73,6 +75,8 @@ def _parse_json_file() -> List[PingHost]:
 
 
 def _parse_ndjson_file() -> List[PingHost]:
+    # TODO import canonically avoiding circular import
+    from .logging import logger
     filename = general_settings.hosts_file
     if not filename.endswith(".ndjson"):
         filename += ".ndjson"

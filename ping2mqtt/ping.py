@@ -59,6 +59,8 @@ class Ping:
                 time=result_time
             )
 
+        # NOTE should try to identify why a ping failed?
+        #  If is a problem with the ping command itself, might be better to avoid reporting a failed ping?
         if not any(True for chunk in cls.PING_IGNORE_LINES_CONTAINING if chunk in line):
             logger.debug(f"Ping {host.host} = failed")
             return PingResult(
@@ -68,8 +70,10 @@ class Ping:
 
     async def _ping_host(self, host: PingHost):
         """Run ping against the given host, indefinitely. Ping results are put on the queue"""
+        cmd = self._assemble_command(host)
+        logger.trace(f"Running ping command: \"{cmd}\"")
         proc = await asyncio.subprocess.create_subprocess_shell(
-            self._assemble_command(host),
+            cmd,
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE
         )
@@ -90,6 +94,8 @@ class Ping:
 
             last_read = current_read
             await self._queue.put(result)
+
+        logger.error(f"Ping command for host {host.host} exited with rc={proc.returncode}")
 
     async def run(self, hosts: List[PingHost]):
         await asyncio.gather(*[self._ping_host(host) for host in hosts])
