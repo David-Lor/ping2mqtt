@@ -25,6 +25,7 @@ class Ping:
     @staticmethod
     def _assemble_command(host: PingHost) -> str:
         cmd = [
+            "LANG=C",  # Avoid issues with decimal points in "ping" command
             "ping", host.host,
             "-i", str(host.interval)
         ]
