@@ -1,4 +1,5 @@
 import asyncio
+import subprocess
 from time import time
 from typing import List, Optional
 
@@ -21,6 +22,11 @@ class Ping:
 
     def __init__(self, queue: asyncio.Queue):
         self._queue = queue
+
+    @staticmethod
+    def is_ping_installed() -> bool:
+        """Verify if the "ping" command is available"""
+        return subprocess.check_call(["which", "ping"]) == 0
 
     @staticmethod
     def _assemble_command(host: PingHost) -> str:

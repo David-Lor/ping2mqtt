@@ -21,6 +21,9 @@ async def amain():
         logger.error("No hosts defined")
         exit(1)
 
+    if not Ping.is_ping_installed():
+        raise Exception("\"ping\" util (from iputils) is not installed on this system!")
+
     mqtt = MQTT(MQTTSettings())
     await mqtt.connect()
     asyncio.create_task(mqtt.run())
