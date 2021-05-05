@@ -31,6 +31,8 @@ async def amain():
     ping = Ping(mqtt.queue)
     await ping.run(hosts)
     # TODO more clean exit
+    #  containers may take too long to stop.
+    #  Run async tasks in background and capture signal events, then stop ping processes?
 
 
 def main():
