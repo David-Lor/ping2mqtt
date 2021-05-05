@@ -71,7 +71,7 @@ class Ping:
             logger.debug(f"Ping {host.host} = failed")
             return PingResult(
                 host=host.host,
-                time=-1
+                time=PingResult.TIME_FAILED
             )
 
     async def _ping_host(self, host: PingHost):

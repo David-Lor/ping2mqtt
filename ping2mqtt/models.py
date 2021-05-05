@@ -10,6 +10,12 @@ class PingHost(BaseModel):
 
 
 class PingResult:
+    TIME_FAILED = -1
+
     def __init__(self, host, time):
         self.host = host
         self.time = float(time)
+
+    @property
+    def failed(self):
+        return self.time == self.TIME_FAILED

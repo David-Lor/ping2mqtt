@@ -37,7 +37,7 @@ class MQTT:
 
     async def _publish_ping_result(self, ping_result: PingResult):
         topic = self._settings.format_topic(ping_result.host)
-        payload = str(ping_result.time)
+        payload = str(ping_result.time) if not ping_result.failed else self._settings.failed_ping_payload
         await self._publish(topic, payload)
 
     async def run(self):

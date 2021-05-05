@@ -29,6 +29,7 @@ class MQTTSettings(BaseSettings):
     client_id: str = None
     transport: str = "tcp"
     base_topic: str = "ping"
+    failed_ping_payload: str = "-1"
 
     @pydantic.validator("client_id", pre=True)
     def _default_client_id(cls, v):
