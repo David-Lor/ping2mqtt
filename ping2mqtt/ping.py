@@ -8,9 +8,6 @@ import parse
 from .models import PingHost, PingResult
 from .logging import logger
 
-# TODO class PingTask - use one per host ???
-# TODO abstract Ping class - for using other pinging methods different than icmp ???
-
 
 class Ping:
     PING_IGNORE_LINES_CONTAINING = {
@@ -88,7 +85,6 @@ class Ping:
         while proc.returncode is None:
             line = (await proc.stdout.readline()).decode().strip()
             logger.trace(f"Ping line received: \"{line}\"")
-            # TODO detect errors such as "ping" util not installed
 
             result = self._parse_ping_line(host=host, line=line)
             if result is None:
