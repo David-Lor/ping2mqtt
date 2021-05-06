@@ -1,4 +1,5 @@
 import asyncio
+import ssl
 
 from asyncio_mqtt import Client
 
@@ -17,9 +18,17 @@ class MQTT:
             username=settings.username,
             password=settings.password,
             client_id=settings.client_id,
-            # TODO SSL Support
             transport=settings.transport
         )
+        if settings.ssl_enabled:
+            # noinspection PyProtectedMember
+            self._client._client.tls_set(
+                ca_certs=settings.ssl_ca_certs,
+                certfile=settings.ssl_certfile,
+                keyfile=settings.ssl_keyfile,
+                tls_version=ssl.PROTOCOL_TLS,
+                cert_reqs=ssl.CERT_REQUIRED
+            )
         self._publish_queue = asyncio.Queue()
         self._settings = settings
 

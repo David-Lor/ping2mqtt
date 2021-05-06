@@ -26,6 +26,9 @@ class MQTTSettings(BaseSettings):
     port: int = 1883
     username: Optional[str] = None
     password: Optional[str] = None
+    ssl_ca_certs: Optional[str] = None
+    ssl_certfile: Optional[str] = None
+    ssl_keyfile: Optional[str] = None
     client_id: str = None
     transport: str = "tcp"
     base_topic: str = "ping"
@@ -42,6 +45,10 @@ class MQTTSettings(BaseSettings):
         while "//" in result:
             result = result.replace("//", "/")
         return result
+
+    @property
+    def ssl_enabled(self):
+        return self.ssl_ca_certs or self.ssl_certfile or self.ssl_keyfile
 
     class Config(BaseSettings.Config):
         env_prefix = "MQTT_"
