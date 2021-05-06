@@ -2,6 +2,8 @@
 
 Service that periodically ICMP-pings hosts and publishes the results in MQTT topics.
 
+**This project is experimental and might have undesirable effects. Use it under your responsability!**
+
 ## Requirements
 
 - Python >=3.6
@@ -62,6 +64,11 @@ docker run -d --name=ping2mqtt \
     -e GIT_REPOSITORY=https://github.com/David-Lor/ping2mqtt \
     davidlor/python-git-app
 ```
+
+## Changelog
+
+- 0.0.1
+    - Initial release
 
 ## Future improvements
 
