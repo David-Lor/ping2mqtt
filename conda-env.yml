@@ -1,0 +1,8 @@
+# conda env create --file conda-env.yml
+
+name: ping2mqtt
+dependencies:
+    - python=3.8
+    - pip
+    - pip:
+        - "-r file:requirements.txt"
