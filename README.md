@@ -32,7 +32,7 @@ The hosts can be defined in either a JSON or [NDJSON](http://ndjson.org/) file:
 {"host": "208.67.222.222", "interval": 2}
 ```
 
-The file must be named either `hosts.json` or `hosts.ndjson`, depending if specified as a JSON or NDJSON, respectively.
+The file must be named either `hosts.json` or `hosts.ndjson`, depending on if specified as a JSON or NDJSON, respectively.
 
 Each final JSON object within the hosts file represents a host to ping. Its attributes are:
 
@@ -57,6 +57,9 @@ The following command will start a container with such image, using this reposit
 cp sample.env .env
 # Edit your .env file!
 
+cp examples/hosts.ndjson .
+# Put your custom hosts for pinging, or use the given examples
+
 docker run -d --name=ping2mqtt \
     -v $(pwd)/hosts.ndjson:/hosts.ndjson \
     --env-file $(pwd)/.env \
@@ -70,7 +73,7 @@ docker run -d --name=ping2mqtt \
 - 0.0.1
     - Initial release
 
-## Future improvements
+## Known Issues & Future improvements
 
+- Sometimes, ping values can be incorrect (too low or too high) - does not seem to be very common
 - Improve service exit flow
-- MQTT SSL support
